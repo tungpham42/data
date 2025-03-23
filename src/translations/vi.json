@@ -1,6 +1,6 @@
 {
   "app_title": "Công Cụ Phân Tích Dữ Liệu",
-  "upload_label": "Tải lên tệp CSV hoặc Excel",
+  "upload_label": "Tải lên tệp CSV, Excel hoặc JSON",
   "no_data_error": "Không tìm thấy dữ liệu trong tệp đã tải lên",
   "invalid_data_error": "Định dạng dữ liệu không hợp lệ",
   "data_table_title": "Bảng Dữ Liệu",

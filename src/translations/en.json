@@ -1,6 +1,6 @@
 {
   "app_title": "Data Analysis Tool",
-  "upload_label": "Upload CSV or Excel file",
+  "upload_label": "Upload CSV, Excel or JSON file",
   "no_data_error": "No data found in the uploaded file",
   "invalid_data_error": "Invalid data format",
   "data_table_title": "Data Table",

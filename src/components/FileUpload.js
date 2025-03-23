@@ -18,7 +18,7 @@ function FileUpload({ onDataUpload }) {
         complete: (result) => onDataUpload(result),
         header: true,
       });
-    } else if (file.name.endsWith(".xlsx")) {
+    } else if (file.name.endsWith(".xlsx") || file.name.endsWith(".xls")) {
       reader.onload = (event) => {
         const data = new Uint8Array(event.target.result);
         const workbook = XLSX.read(data, { type: "array" });
@@ -28,6 +28,25 @@ function FileUpload({ onDataUpload }) {
         onDataUpload({ data: jsonData });
       };
       reader.readAsArrayBuffer(file);
+    } else if (file.name.endsWith(".json")) {
+      reader.onload = (event) => {
+        try {
+          const jsonData = JSON.parse(event.target.result);
+          // Ensure the JSON data is an array of objects
+          if (
+            Array.isArray(jsonData) &&
+            jsonData.length > 0 &&
+            typeof jsonData[0] === "object"
+          ) {
+            onDataUpload({ data: jsonData });
+          } else {
+            throw new Error(t("invalid_data_error"));
+          }
+        } catch (error) {
+          onDataUpload({ error: t("invalid_data_error") });
+        }
+      };
+      reader.readAsText(file);
     }
   };
 
@@ -39,7 +58,7 @@ function FileUpload({ onDataUpload }) {
       </Form.Label>
       <Form.Control
         type="file"
-        accept=".csv,.xlsx"
+        accept=".csv,.xlsx,.xls,.json"
         onChange={handleFileUpload}
       />
     </Form.Group>

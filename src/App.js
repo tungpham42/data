@@ -18,7 +18,15 @@ const AppContent = React.memo(() => {
   const columns = useMemo(() => (data ? Object.keys(data[0]) : []), [data]);
 
   const validateData = (parsedData) => {
+    if (parsedData?.error) throw new Error(parsedData.error);
     if (!parsedData?.data?.length) throw new Error(t("no_data_error"));
+    if (
+      !Array.isArray(parsedData.data) ||
+      !parsedData.data[0] ||
+      typeof parsedData.data[0] !== "object"
+    ) {
+      throw new Error(t("invalid_data_error"));
+    }
     if (!Object.keys(parsedData.data[0]).length)
       throw new Error(t("invalid_data_error"));
     return true;
