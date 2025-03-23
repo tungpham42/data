@@ -1,44 +1,217 @@
+/* Import modern fonts from Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  background-color: #f5f7fa;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Roboto", sans-serif;
+  background-color: #f4f7fa;
+  color: #333;
 }
 
+/* Container and layout */
+.container-fluid {
+  padding: 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, #eef2f7 100%);
+  min-height: 100vh;
+}
+
+/* Typography */
 h1 {
-  color: #2c3e50;
-  margin-bottom: 2rem;
+  font-family: "Montserrat", sans-serif;
   font-weight: 600;
-}
-
-.card {
-  border: none;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  font-size: 2.25rem;
+  color: #2c3e50 !important;
   margin-bottom: 1.5rem;
 }
 
 .card-title {
-  color: #34495e;
-  font-size: 1.2rem;
+  font-family: "Montserrat", sans-serif;
   font-weight: 500;
+  font-size: 1.5rem;
+  color: #34495e !important;
 }
 
-.table {
-  font-size: 0.9rem;
+/* Cards */
+.card {
+  border: none !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  background-color: #fff !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* Buttons */
+.btn {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 0.5rem 1.25rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #3498db !important;
+  border-color: #3498db !important;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9 !important;
+  border-color: #2980b9 !important;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: #2ecc71 !important;
+  border-color: #2ecc71 !important;
+}
+
+.btn-secondary:hover {
+  background-color: #27ae60 !important;
+  border-color: #27ae60 !important;
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background-color: #e74c3c !important;
+  border-color: #e74c3c !important;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b !important;
+  border-color: #c0392b !important;
+  transform: translateY(-2px);
+}
+
+/* Form elements */
 .form-control,
 .form-select {
-  border-radius: 6px;
-  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #dcdcdc !important;
+  padding: 0.75rem;
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn {
-  border-radius: 6px;
-  padding: 0.4rem 1rem;
+.form-control:focus,
+.form-select:focus {
+  border-color: #3498db !important;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  outline: none;
 }
 
+.form-label {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  color: #34495e !important;
+}
+
+/* Tables */
+.table {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff !important;
+}
+
+.table th {
+  background-color: #3498db !important;
+  color: #fff !important;
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: 500;
+  padding: 1rem;
+}
+
+.table td {
+  padding: 0.875rem;
+  vertical-align: middle;
+  font-family: "Roboto", sans-serif !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f9fbfc !important;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #eef2f7 !important;
+}
+
+/* Alerts */
+.alert {
+  border-radius: 8px;
+  font-family: "Roboto", sans-serif;
+  padding: 1rem;
+}
+
+.alert-danger {
+  background-color: #fcecea !important;
+  border-color: #e74c3c !important;
+  color: #c0392b !important;
+}
+
+/* Pagination */
+.pagination .page-item .page-link {
+  border-radius: 6px;
+  margin: 0 3px;
+  color: #3498db !important;
+  border: 1px solid #dcdcdc !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #3498db !important;
+  border-color: #3498db !important;
+  color: #fff !important;
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: #eef2f7 !important;
+  color: #2980b9 !important;
+}
+
+/* Chart container */
 .chart-container {
   padding: 1rem;
-  background: white;
-  border-radius: 8px;
+  background-color: #fff !important;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Icons */
+.me-2 {
+  color: #3498db !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+  }
+
+  .btn {
+    padding: 0.4rem 1rem;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: 0.9rem;
+  }
 }

@@ -133,7 +133,7 @@ function ChartBuilder({ data, columns }) {
                   onClick={() => removeYAxis(idx)}
                   disabled={yAxes.length <= 1}
                   title="Remove Y-Axis"
-                  className="mb-2 pt-2 px-2"
+                  className="py-1 px-2"
                 >
                   <FontAwesomeIcon icon={faTimes} />
                 </Button>

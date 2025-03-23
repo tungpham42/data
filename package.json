@@ -12,7 +12,6 @@
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.3.3",
-    "bootswatch": "^5.3.3",
     "highcharts": "^12.1.2",
     "highcharts-react-official": "^3.2.1",
     "papaparse": "^5.5.2",
