@@ -27,6 +27,7 @@ function PivotTable({ data, columns }) {
       const rowValues = [...new Set(data.map((item) => item[rowField]))];
       const colValues = [...new Set(data.map((item) => item[colField]))];
 
+      // Aggregate data by rowField and colField, summing valueField
       data.forEach((item) => {
         const rowKey = item[rowField];
         const colKey = item[colField];
