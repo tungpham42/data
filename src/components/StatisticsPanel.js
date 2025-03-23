@@ -1,38 +1,65 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Card, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartPie } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "../LanguageContext";
 
-function StatisticsPanel({ data, columns }) {
-  const numericColumns = columns.filter((col) =>
-    data.every((item) => !isNaN(Number(item[col])))
+const StatisticsPanel = React.memo(({ data, columns }) => {
+  const numericColumns = useMemo(
+    () =>
+      columns.filter((col) => data.every((item) => !isNaN(Number(item[col])))),
+    [data, columns]
   );
   const [stats, setStats] = useState({});
   const { t } = useLanguage();
 
   useEffect(() => {
-    if (typeof Worker === "undefined") {
-      console.warn("Web Workers not supported");
-      return;
-    }
+    if (!numericColumns.length) return;
 
-    const worker = new Worker("/worker.js");
-    worker.onmessage = (e) => {
-      if (e.data.type === "stats") {
-        setStats(e.data.result);
-      }
+    const computeStats = (data, cols) => {
+      const result = {};
+      cols.forEach((col) => {
+        const values = data
+          .map((item) => Number(item[col]))
+          .filter((v) => !isNaN(v));
+        const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
+        const sorted = [...values].sort((a, b) => a - b);
+        const median = sorted[Math.floor(sorted.length / 2)];
+        const stdDev = Math.sqrt(
+          values.reduce((sum, val) => sum + (val - mean) ** 2, 0) /
+            values.length
+        );
+        result[col] = {
+          mean,
+          median,
+          stdDev,
+          min: Math.min(...values),
+          max: Math.max(...values),
+        };
+      });
+      return result;
     };
-    worker.onerror = (error) => console.error("Worker error:", error);
 
-    const statsData = numericColumns.reduce((acc, col) => {
-      acc[col] = data.map((item) => Number(item[col]));
-      return acc;
-    }, {});
+    if (typeof Worker !== "undefined") {
+      const worker = new Worker("/worker.js");
+      worker.onmessage = (e) => {
+        if (e.data.type === "stats") setStats(e.data.result);
+      };
+      worker.onerror = (error) => {
+        console.error("Worker error:", error);
+        setStats(computeStats(data, numericColumns));
+      };
 
-    worker.postMessage({ type: "stats", data: statsData });
+      const statsData = numericColumns.reduce((acc, col) => {
+        acc[col] = data.map((item) => Number(item[col]));
+        return acc;
+      }, {});
+      worker.postMessage({ type: "stats", data: statsData });
 
-    return () => worker.terminate();
+      return () => worker.terminate();
+    } else {
+      setStats(computeStats(data, numericColumns));
+    }
   }, [data, numericColumns]);
 
   return (
@@ -71,6 +98,6 @@ function StatisticsPanel({ data, columns }) {
       </Card.Body>
     </Card>
   );
-}
+});
 
 export default StatisticsPanel;

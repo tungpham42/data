@@ -1,39 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Card, Form, Button, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalculator, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "../LanguageContext";
 
-function DecisionMaker({ data, columns }) {
-  const numericCols = columns.filter((col) =>
-    data.every((item) => !isNaN(Number(item[col])))
+const DecisionMaker = React.memo(({ data, columns }) => {
+  const numericCols = useMemo(
+    () =>
+      columns.filter((col) => data.every((item) => !isNaN(Number(item[col])))),
+    [data, columns]
   );
-  const [weights, setWeights] = useState(
+  const [weights, setWeights] = useState(() =>
     Object.fromEntries(numericCols.map((col) => [col, 1]))
   );
   const [decisionResults, setDecisionResults] = useState(null);
   const { t } = useLanguage();
 
   const calculateDecisions = () => {
-    if (typeof Worker === "undefined") {
-      console.warn("Web Workers not supported");
-      return;
-    }
-
-    const worker = new Worker("/worker.js");
-    worker.onmessage = (e) => {
-      if (e.data.type === "decision") {
-        setDecisionResults(e.data.result);
-      }
-      worker.terminate();
+    const computeDecisions = (data, cols, weights) => {
+      return data
+        .map((item) => {
+          const totalScore = cols.reduce(
+            (sum, col) => sum + Number(item[col]) * weights[col],
+            0
+          );
+          return { ...item, totalScore };
+        })
+        .sort((a, b) => b.totalScore - a.totalScore);
     };
-    worker.onerror = (error) => console.error("Worker error:", error);
 
-    worker.postMessage({
-      type: "decision",
-      data,
-      config: { numericCols, weights },
-    });
+    if (typeof Worker !== "undefined") {
+      const worker = new Worker("/worker.js");
+      worker.onmessage = (e) => {
+        if (e.data.type === "decision") setDecisionResults(e.data.result);
+        worker.terminate();
+      };
+      worker.onerror = (error) => {
+        console.error("Worker error:", error);
+        setDecisionResults(computeDecisions(data, numericCols, weights));
+      };
+      worker.postMessage({
+        type: "decision",
+        data,
+        config: { numericCols, weights },
+      });
+    } else {
+      setDecisionResults(computeDecisions(data, numericCols, weights));
+    }
+  };
+
+  const handleWeightChange = (col, value) => {
+    setWeights((prev) => ({ ...prev, [col]: Number(value) }));
   };
 
   return (
@@ -54,9 +71,7 @@ function DecisionMaker({ data, columns }) {
                 min="0"
                 step="0.1"
                 value={weights[col]}
-                onChange={(e) =>
-                  setWeights({ ...weights, [col]: Number(e.target.value) })
-                }
+                onChange={(e) => handleWeightChange(col, e.target.value)}
               />
             </Form.Group>
           ))}
@@ -92,6 +107,6 @@ function DecisionMaker({ data, columns }) {
       </Card.Body>
     </Card>
   );
-}
+});
 
 export default DecisionMaker;

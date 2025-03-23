@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Container, Row, Col, Alert, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartLine } from "@fortawesome/free-solid-svg-icons";
@@ -10,19 +10,17 @@ import PivotTable from "./components/PivotTable";
 import DecisionMaker from "./components/DecisionMaker";
 import { LanguageProvider, useLanguage } from "./LanguageContext";
 
-function AppContent() {
+const AppContent = React.memo(() => {
   const [data, setData] = useState(null);
-  const [columns, setColumns] = useState([]);
   const [error, setError] = useState(null);
   const { t, language, setLanguage } = useLanguage();
 
+  const columns = useMemo(() => (data ? Object.keys(data[0]) : []), [data]);
+
   const validateData = (parsedData) => {
-    if (!parsedData?.data?.length) {
-      throw new Error(t("no_data_error"));
-    }
-    if (!Object.keys(parsedData.data[0]).length) {
+    if (!parsedData?.data?.length) throw new Error(t("no_data_error"));
+    if (!Object.keys(parsedData.data[0]).length)
       throw new Error(t("invalid_data_error"));
-    }
     return true;
   };
 
@@ -31,11 +29,9 @@ function AppContent() {
       setError(null);
       validateData(parsedData);
       setData(parsedData.data);
-      setColumns(Object.keys(parsedData.data[0]));
     } catch (err) {
       setError(err.message);
       setData(null);
-      setColumns([]);
     }
   };
 
@@ -78,7 +74,7 @@ function AppContent() {
       )}
     </Container>
   );
-}
+});
 
 function App() {
   return (
