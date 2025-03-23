@@ -4,8 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
+import { useLanguage } from "../LanguageContext";
 
 function FileUpload({ onDataUpload }) {
+  const { t } = useLanguage();
+
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -32,7 +35,7 @@ function FileUpload({ onDataUpload }) {
     <Form.Group controlId="formFile" className="mb-3">
       <Form.Label>
         <FontAwesomeIcon icon={faUpload} className="me-1" />
-        Upload CSV or Excel file
+        {t("upload_label")}
       </Form.Label>
       <Form.Control
         type="file"

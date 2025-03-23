@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Card, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartPie } from "@fortawesome/free-solid-svg-icons";
+import { useLanguage } from "../LanguageContext";
 
 function StatisticsPanel({ data, columns }) {
   const numericColumns = columns.filter((col) =>
     data.every((item) => !isNaN(Number(item[col])))
   );
   const [stats, setStats] = useState({});
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (typeof Worker === "undefined") {
@@ -38,17 +40,17 @@ function StatisticsPanel({ data, columns }) {
       <Card.Body>
         <Card.Title>
           <FontAwesomeIcon icon={faChartPie} className="me-2" />
-          Statistics
+          {t("statistics_title")}
         </Card.Title>
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
-              <th>Column</th>
-              <th>Mean</th>
-              <th>Median</th>
-              <th>Std Dev</th>
-              <th>Min</th>
-              <th>Max</th>
+              <th>{t("column")}</th>
+              <th>{t("mean")}</th>
+              <th>{t("median")}</th>
+              <th>{t("std_dev")}</th>
+              <th>{t("min")}</th>
+              <th>{t("max")}</th>
             </tr>
           </thead>
           <tbody>

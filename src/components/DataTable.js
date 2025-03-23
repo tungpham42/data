@@ -7,6 +7,7 @@ import {
   faArrowDown,
   faTable,
 } from "@fortawesome/free-solid-svg-icons";
+import { useLanguage } from "../LanguageContext";
 
 function DataTable({ data, columns }) {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
@@ -14,6 +15,7 @@ function DataTable({ data, columns }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [processedData, setProcessedData] = useState([]);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (typeof Worker === "undefined") {
@@ -64,13 +66,13 @@ function DataTable({ data, columns }) {
       <Card.Body>
         <Card.Title>
           <FontAwesomeIcon icon={faTable} className="me-2" />
-          Data Table
+          {t("data_table_title")}
         </Card.Title>
         <div className="d-flex justify-content-between mb-3">
           <Form.Group className="w-50">
             <Form.Control
               type="text"
-              placeholder="Filter table..."
+              placeholder={t("filter_placeholder")}
               value={filter}
               onChange={(e) => {
                 setFilter(e.target.value);
@@ -79,7 +81,7 @@ function DataTable({ data, columns }) {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label className="me-2">Rows per page:</Form.Label>
+            <Form.Label className="me-2">{t("rows_per_page")}</Form.Label>
             <Form.Select
               value={rowsPerPage}
               onChange={(e) => {
@@ -133,9 +135,11 @@ function DataTable({ data, columns }) {
         {totalPages > 1 && (
           <div className="d-flex justify-content-between align-items-center mt-3">
             <div>
-              Showing {(currentPage - 1) * rowsPerPage + 1} to{" "}
-              {Math.min(currentPage * rowsPerPage, processedData.length)} of{" "}
-              {processedData.length} entries
+              {t("showing_entries", {
+                start: (currentPage - 1) * rowsPerPage + 1,
+                end: Math.min(currentPage * rowsPerPage, processedData.length),
+                total: processedData.length,
+              })}
             </div>
             <Pagination>
               <Pagination.First

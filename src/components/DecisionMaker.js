@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Card, Form, Button, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalculator, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { useLanguage } from "../LanguageContext";
 
 function DecisionMaker({ data, columns }) {
   const numericCols = columns.filter((col) =>
@@ -11,6 +12,7 @@ function DecisionMaker({ data, columns }) {
     Object.fromEntries(numericCols.map((col) => [col, 1]))
   );
   const [decisionResults, setDecisionResults] = useState(null);
+  const { t } = useLanguage();
 
   const calculateDecisions = () => {
     if (typeof Worker === "undefined") {
@@ -39,12 +41,14 @@ function DecisionMaker({ data, columns }) {
       <Card.Body>
         <Card.Title>
           <FontAwesomeIcon icon={faCalculator} className="me-2" />
-          Decision Maker
+          {t("decision_maker_title")}
         </Card.Title>
         <Form>
           {numericCols.map((col) => (
             <Form.Group key={col} className="mb-2">
-              <Form.Label>{col} Weight</Form.Label>
+              <Form.Label>
+                {col} {t("weight_label")}
+              </Form.Label>
               <Form.Control
                 type="number"
                 min="0"
@@ -58,7 +62,7 @@ function DecisionMaker({ data, columns }) {
           ))}
           <Button onClick={calculateDecisions} className="mt-2">
             <FontAwesomeIcon icon={faPlay} className="me-1" />
-            Calculate Decisions
+            {t("calculate_decisions")}
           </Button>
         </Form>
         {decisionResults && (
@@ -68,7 +72,7 @@ function DecisionMaker({ data, columns }) {
                 {columns.map((col) => (
                   <th key={col}>{col}</th>
                 ))}
-                <th>Score</th>
+                <th>{t("score")}</th>
               </tr>
             </thead>
             <tbody>

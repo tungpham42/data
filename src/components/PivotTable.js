@@ -7,6 +7,7 @@ import {
   faArrowDown,
   faLayerGroup,
 } from "@fortawesome/free-solid-svg-icons";
+import { useLanguage } from "../LanguageContext";
 
 function PivotTable({ data, columns }) {
   const [rowField, setRowField] = useState(columns[0]);
@@ -17,6 +18,7 @@ function PivotTable({ data, columns }) {
   const [pivotResult, setPivotResult] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (typeof Worker === "undefined") {
@@ -73,13 +75,13 @@ function PivotTable({ data, columns }) {
       <Card.Body>
         <Card.Title>
           <FontAwesomeIcon icon={faTable} className="me-2" />
-          Pivot Table
+          {t("pivot_table_title")}
         </Card.Title>
         <Form className="mb-3">
           <Form.Group>
             <Form.Label>
               <FontAwesomeIcon icon={faArrowDown} className="me-1" />
-              Rows
+              {t("rows")}
             </Form.Label>
             <Form.Select onChange={(e) => setRowField(e.target.value)}>
               {columns.map((col) => (
@@ -92,7 +94,7 @@ function PivotTable({ data, columns }) {
           <Form.Group>
             <Form.Label>
               <FontAwesomeIcon icon={faArrowUp} className="me-1" />
-              Columns
+              {t("columns")}
             </Form.Label>
             <Form.Select onChange={(e) => setColField(e.target.value)}>
               {columns.map((col) => (
@@ -105,7 +107,7 @@ function PivotTable({ data, columns }) {
           <Form.Group>
             <Form.Label>
               <FontAwesomeIcon icon={faLayerGroup} className="me-1" />
-              Values
+              {t("values")}
             </Form.Label>
             <Form.Select onChange={(e) => setValueField(e.target.value)}>
               {columns.map((col) => (
@@ -116,7 +118,7 @@ function PivotTable({ data, columns }) {
             </Form.Select>
           </Form.Group>
           <Form.Group className="mt-2">
-            <Form.Label>Rows per page:</Form.Label>
+            <Form.Label>{t("rows_per_page")}</Form.Label>
             <Form.Select
               value={rowsPerPage}
               onChange={(e) => {
@@ -157,9 +159,11 @@ function PivotTable({ data, columns }) {
         {totalPages > 1 && (
           <div className="d-flex justify-content-between align-items-center mt-3">
             <div>
-              Showing {(currentPage - 1) * rowsPerPage + 1} to{" "}
-              {Math.min(currentPage * rowsPerPage, rowValues.length)} of{" "}
-              {rowValues.length} entries
+              {t("showing_entries", {
+                start: (currentPage - 1) * rowsPerPage + 1,
+                end: Math.min(currentPage * rowsPerPage, rowValues.length),
+                total: rowValues.length,
+              })}
             </div>
             <Pagination>
               <Pagination.First
