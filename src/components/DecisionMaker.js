@@ -66,26 +66,28 @@ function DecisionMaker({ data, columns }) {
           </Button>
         </Form>
         {decisionResults && (
-          <Table striped bordered hover size="sm" className="mt-3">
-            <thead>
-              <tr>
-                {columns.map((col) => (
-                  <th key={col}>{col}</th>
-                ))}
-                <th>{t("score")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {decisionResults.slice(0, 5).map((item, idx) => (
-                <tr key={idx}>
+          <div className="table-responsive mt-3">
+            <Table striped bordered hover size="sm">
+              <thead>
+                <tr>
                   {columns.map((col) => (
-                    <td key={col}>{item[col]}</td>
+                    <th key={col}>{col}</th>
                   ))}
-                  <td>{item.totalScore.toFixed(2)}</td>
+                  <th>{t("score")}</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {decisionResults.slice(0, 5).map((item, idx) => (
+                  <tr key={idx}>
+                    {columns.map((col) => (
+                      <td key={col}>{item[col]}</td>
+                    ))}
+                    <td>{item.totalScore.toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
         )}
       </Card.Body>
     </Card>
