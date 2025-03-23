@@ -28,6 +28,26 @@ function ChartBuilder({ data, columns }) {
     }
   };
 
+  // Aggregate data by xAxis, summing yAxes values for duplicate xAxis entries
+  const aggregatedData = data.reduce((acc, item) => {
+    const xValue = item[xAxis];
+    const existing = acc.find((d) => d[xAxis] === xValue);
+    if (existing) {
+      yAxes.forEach((yAxis) => {
+        existing[yAxis] =
+          (Number(existing[yAxis]) || 0) + (Number(item[yAxis]) || 0);
+      });
+    } else {
+      acc.push({
+        [xAxis]: xValue,
+        ...Object.fromEntries(
+          yAxes.map((yAxis) => [yAxis, Number(item[yAxis]) || 0])
+        ),
+      });
+    }
+    return acc;
+  }, []);
+
   const chartOptions = {
     chart: {
       type: chartType,
@@ -35,7 +55,7 @@ function ChartBuilder({ data, columns }) {
     },
     title: { text: chartTitle || `${t(`${chartType}_chart`)} Chart` },
     xAxis: {
-      categories: data.map((item) => item[xAxis]),
+      categories: aggregatedData.map((item) => item[xAxis]),
       title: { text: xAxis },
       crosshair: true,
     },
@@ -45,7 +65,7 @@ function ChartBuilder({ data, columns }) {
     },
     series: yAxes.map((yAxis, idx) => ({
       name: yAxis,
-      data: data.map((item) => Number(item[yAxis])),
+      data: aggregatedData.map((item) => Number(item[yAxis])),
       color: colors[idx],
     })),
     plotOptions: {
