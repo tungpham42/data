@@ -32,5 +32,15 @@
   "line_chart": "Line",
   "pie_chart": "Pie",
   "scatter_chart": "Scatter",
-  "area_chart": "Area"
+  "area_chart": "Area",
+  "data_cleaner_title": "Data Cleaner",
+  "remove_duplicates_label": "Remove Duplicates",
+  "fill_missing_label": "Fill Missing Values",
+  "fill_missing_leave": "Leave as is",
+  "fill_missing_zero": "Fill with 0",
+  "fill_missing_na": "Fill with 'N/A'",
+  "trim_strings_label": "Trim Strings",
+  "normalize_numbers_label": "Normalize Numbers",
+  "clean_data_button": "Clean Data",
+  "error_cleaning_data": "Error cleaning data: {message}"
 }

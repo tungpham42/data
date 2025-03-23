@@ -32,5 +32,15 @@
   "line_chart": "Đường",
   "pie_chart": "Tròn",
   "scatter_chart": "Phân tán",
-  "area_chart": "Khu vực"
+  "area_chart": "Khu vực",
+  "data_cleaner_title": "Công Cụ Làm Sạch Dữ Liệu",
+  "remove_duplicates_label": "Xóa Trùng Lặp",
+  "fill_missing_label": "Điền Giá Trị Thiếu",
+  "fill_missing_leave": "Giữ Nguyên",
+  "fill_missing_zero": "Điền bằng 0",
+  "fill_missing_na": "Điền bằng 'N/A'",
+  "trim_strings_label": "Cắt Khoảng Trắng Chuỗi",
+  "normalize_numbers_label": "Chuẩn Hóa Số",
+  "clean_data_button": "Làm Sạch Dữ Liệu",
+  "error_cleaning_data": "Lỗi khi làm sạch dữ liệu: {message}"
 }

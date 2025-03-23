@@ -8,11 +8,13 @@ import ChartBuilder from "./components/ChartBuilder";
 import StatisticsPanel from "./components/StatisticsPanel";
 import PivotTable from "./components/PivotTable";
 import DecisionMaker from "./components/DecisionMaker";
+import DataCleaner from "./components/DataCleaner"; // Import the new component
 import { LanguageProvider, useLanguage } from "./LanguageContext";
 import Footer from "./components/Footer";
 
 const AppContent = React.memo(() => {
-  const [data, setData] = useState(null);
+  const [rawData, setRawData] = useState(null); // Store raw uploaded data
+  const [data, setData] = useState(null); // Store cleaned data
   const [error, setError] = useState(null);
   const { t, language, setLanguage } = useLanguage();
 
@@ -37,11 +39,17 @@ const AppContent = React.memo(() => {
     try {
       setError(null);
       validateData(parsedData);
-      setData(parsedData.data);
+      setRawData(parsedData.data); // Store raw data
+      setData(null); // Reset cleaned data until cleaning is applied
     } catch (err) {
       setError(err.message);
+      setRawData(null);
       setData(null);
     }
+  };
+
+  const handleDataCleaned = (cleanedData) => {
+    setData(cleanedData); // Update the cleaned data state
   };
 
   return (
@@ -68,17 +76,28 @@ const AppContent = React.memo(() => {
           {error && <Alert variant="danger">{error}</Alert>}
         </Col>
       </Row>
-      {data && (
+      {rawData && (
         <Row className="mt-4">
           <Col md={6}>
-            <DataTable data={data} columns={columns} />
-            <StatisticsPanel data={data} columns={columns} />
-            <DecisionMaker data={data} columns={columns} />
+            <DataCleaner
+              rawData={rawData}
+              columns={Object.keys(rawData[0])}
+              onDataCleaned={handleDataCleaned}
+            />
+            {data && (
+              <>
+                <DataTable data={data} columns={columns} />
+                <StatisticsPanel data={data} columns={columns} />
+                <DecisionMaker data={data} columns={columns} />
+              </>
+            )}
           </Col>
-          <Col md={6}>
-            <ChartBuilder data={data} columns={columns} />
-            <PivotTable data={data} columns={columns} />
-          </Col>
+          {data && (
+            <Col md={6}>
+              <ChartBuilder data={data} columns={columns} />
+              <PivotTable data={data} columns={columns} />
+            </Col>
+          )}
         </Row>
       )}
     </Container>
