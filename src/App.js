@@ -9,6 +9,7 @@ import StatisticsPanel from "./components/StatisticsPanel";
 import PivotTable from "./components/PivotTable";
 import DecisionMaker from "./components/DecisionMaker";
 import { LanguageProvider, useLanguage } from "./LanguageContext";
+import Footer from "./components/Footer";
 
 const AppContent = React.memo(() => {
   const [data, setData] = useState(null);
@@ -88,6 +89,7 @@ function App() {
   return (
     <LanguageProvider>
       <AppContent />
+      <Footer />
     </LanguageProvider>
   );
 }
