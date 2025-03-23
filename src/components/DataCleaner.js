@@ -89,11 +89,16 @@ function DataCleaner({ rawData, columns, onDataCleaned }) {
         <Form>
           <Form.Group className="mb-3">
             <Form.Check
+              id="removeDuplicates"
               type="checkbox"
-              label={t("remove_duplicates_label")}
               checked={cleanOptions.removeDuplicates}
               onChange={(e) =>
                 handleOptionChange("removeDuplicates", e.target.checked)
+              }
+              label={
+                <label htmlFor="removeDuplicates">
+                  {t("remove_duplicates_label")}
+                </label>
               }
             />
           </Form.Group>
@@ -112,21 +117,29 @@ function DataCleaner({ rawData, columns, onDataCleaned }) {
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Check
+              id="trimStrings"
               type="checkbox"
-              label={t("trim_strings_label")}
               checked={cleanOptions.trimStrings}
               onChange={(e) =>
                 handleOptionChange("trimStrings", e.target.checked)
+              }
+              label={
+                <label htmlFor="trimStrings">{t("trim_strings_label")}</label>
               }
             />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Check
+              id="normalizeNumbers"
               type="checkbox"
-              label={t("normalize_numbers_label")}
               checked={cleanOptions.normalizeNumbers}
               onChange={(e) =>
                 handleOptionChange("normalizeNumbers", e.target.checked)
+              }
+              label={
+                <label htmlFor="normalizeNumbers">
+                  {t("normalize_numbers_label")}
+                </label>
               }
             />
           </Form.Group>
