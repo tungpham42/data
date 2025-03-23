@@ -72,11 +72,11 @@ const AppContent = React.memo(() => {
           <Col md={6}>
             <DataTable data={data} columns={columns} />
             <StatisticsPanel data={data} columns={columns} />
+            <DecisionMaker data={data} columns={columns} />
           </Col>
           <Col md={6}>
             <ChartBuilder data={data} columns={columns} />
             <PivotTable data={data} columns={columns} />
-            <DecisionMaker data={data} columns={columns} />
           </Col>
         </Row>
       )}
