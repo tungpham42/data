@@ -11,13 +11,13 @@ function ChartBuilder({ data, columns }) {
   const [xAxis, setXAxis] = useState(columns[0]);
   const [yAxes, setYAxes] = useState([columns[1]]);
   const [chartTitle, setChartTitle] = useState("");
-  const [colors, setColors] = useState(["#2b908f"]);
+  const [colors, setColors] = useState(["#2b908f", "#90ee7e", "#f45b5b"]); // Start with more colors
   const { t } = useLanguage();
 
   const addYAxis = () => {
     if (yAxes.length < 3) {
       setYAxes([...yAxes, columns[1]]);
-      setColors([...colors, "#90ee7e"]);
+      setColors([...colors, "#90ee7e"]); // Add a default color for new Y-axis
     }
   };
 
@@ -53,25 +53,51 @@ function ChartBuilder({ data, columns }) {
       type: chartType,
       zoomType: "xy",
     },
-    title: { text: chartTitle || `${t(`${chartType}_chart`)} Chart` },
-    xAxis: {
-      categories: aggregatedData.map((item) => item[xAxis]),
-      title: { text: xAxis },
-      crosshair: true,
-    },
-    yAxis: {
-      title: { text: "Values" },
-      gridLineDashStyle: "Dash",
-    },
-    series: yAxes.map((yAxis, idx) => ({
-      name: yAxis,
-      data: aggregatedData.map((item) => Number(item[yAxis])),
-      color: colors[idx],
-    })),
+    title: { text: chartTitle || `${t(`${chartType}_chart`)}` },
+    xAxis:
+      chartType !== "pie"
+        ? {
+            categories: aggregatedData.map((item) => item[xAxis]),
+            title: { text: xAxis },
+            crosshair: true,
+          }
+        : undefined, // Pie charts don’t use xAxis
+    yAxis:
+      chartType !== "pie"
+        ? {
+            title: { text: "Values" },
+            gridLineDashStyle: "Dash",
+          }
+        : undefined, // Pie charts don’t use yAxis
+    series:
+      chartType === "pie"
+        ? [
+            {
+              name: yAxes[0], // Use the first yAxis as the series name
+              data: aggregatedData.map((item, idx) => ({
+                name: item[xAxis], // Use xAxis value as the slice label
+                y: Number(item[yAxes[0]]), // Use the first yAxis value
+                color: colors[idx % colors.length], // Cycle through colors array
+              })),
+            },
+          ]
+        : yAxes.map((yAxis, idx) => ({
+            name: yAxis,
+            data: aggregatedData.map((item) => Number(item[yAxis])),
+            color: colors[idx],
+          })),
     plotOptions: {
       series: {
         animation: true,
         marker: { enabled: chartType === "scatter" },
+      },
+      pie: {
+        allowPointSelect: true,
+        cursor: "pointer",
+        dataLabels: {
+          enabled: true,
+          format: "{point.name}: {point.y}", // Display name and value
+        },
       },
     },
     tooltip: {
