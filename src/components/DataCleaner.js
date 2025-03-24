@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBroom, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "../LanguageContext";
 
-function DataCleaner({ rawData, columns, onDataCleaned }) {
+const DataCleaner = ({ rawData, columns, onDataCleaned }) => {
   const [cleanOptions, setCleanOptions] = useState({
     removeDuplicates: false,
     fillMissing: "leave", // Default to "leave" for consistency
@@ -151,6 +151,6 @@ function DataCleaner({ rawData, columns, onDataCleaned }) {
       </Card.Body>
     </Card>
   );
-}
+};
 
 export default DataCleaner;

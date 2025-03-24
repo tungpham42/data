@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartBar, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "../LanguageContext";
 
-function ChartBuilder({ data, columns }) {
+const ChartBuilder = ({ data, columns }) => {
   const [chartType, setChartType] = useState("column");
   const [xAxis, setXAxis] = useState(columns[0]);
   const [yAxes, setYAxes] = useState([columns[1]]);
@@ -205,6 +205,6 @@ function ChartBuilder({ data, columns }) {
       </Card.Body>
     </Card>
   );
-}
+};
 
 export default ChartBuilder;

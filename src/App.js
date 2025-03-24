@@ -104,13 +104,13 @@ const AppContent = React.memo(() => {
   );
 });
 
-function App() {
+const App = () => {
   return (
     <LanguageProvider>
       <AppContent />
       <Footer />
     </LanguageProvider>
   );
-}
+};
 
 export default App;

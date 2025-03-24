@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "../LanguageContext";
 
-function DataTable({ data, columns }) {
+const DataTable = ({ data, columns }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [filter, setFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -188,6 +188,6 @@ function DataTable({ data, columns }) {
       </Card.Body>
     </Card>
   );
-}
+};
 
 export default DataTable;

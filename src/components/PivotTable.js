@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "../LanguageContext";
 
-function PivotTable({ data, columns }) {
+const PivotTable = ({ data, columns }) => {
   const [rowField, setRowField] = useState(columns[0]);
   const [colField, setColField] = useState(columns[1]);
   const [valueField, setValueField] = useState(
@@ -213,6 +213,6 @@ function PivotTable({ data, columns }) {
       </Card.Body>
     </Card>
   );
-}
+};
 
 export default PivotTable;

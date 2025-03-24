@@ -6,7 +6,7 @@ import Papa from "papaparse";
 import * as XLSX from "xlsx";
 import { useLanguage } from "../LanguageContext";
 
-function FileUpload({ onDataUpload }) {
+const FileUpload = ({ onDataUpload }) => {
   const { t } = useLanguage();
 
   const handleFileUpload = (e) => {
@@ -63,6 +63,6 @@ function FileUpload({ onDataUpload }) {
       />
     </Form.Group>
   );
-}
+};
 
 export default FileUpload;
