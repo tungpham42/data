@@ -1,4 +1,4 @@
-export function calculateStats(numbers) {
+export const calculateStats = (numbers) => {
   if (!numbers || numbers.length === 0) {
     return {
       mean: 0,
@@ -55,4 +55,4 @@ export function calculateStats(numbers) {
     min,
     max,
   };
-}
+};

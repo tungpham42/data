@@ -5,7 +5,7 @@ import vi from "./translations/vi.json";
 const translations = { en, vi };
 const LanguageContext = createContext();
 
-export function LanguageProvider({ children }) {
+export const LanguageProvider = ({ children }) => {
   // Initialize language from localStorage, default to "en" if not set
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem("language") || "vi";
@@ -29,8 +29,8 @@ export function LanguageProvider({ children }) {
       {children}
     </LanguageContext.Provider>
   );
-}
+};
 
-export function useLanguage() {
+export const useLanguage = () => {
   return useContext(LanguageContext);
-}
+};
